@@ -21,10 +21,14 @@ jobs:
       run: python evaluate.py
     - name: Register model
       run: python register_model.py
-    - name: Commit model to registry
-      run: |
-        git config --global user.email "jchilu15@gmail.com"
-        git config --global user.name "jLuPSP"
-        git add registry/
-        git commit -m "Register model [CI]"
-        git push
+    - name: Create Pull Request
+      id: create_pr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: "Adding Model"
+        title: "Adding Model"
+        body: "Automated removal of specified .tf files."
+        branch: "test"
+        delete-branch: true
+        base: "main" # Target branch to merge changes into
+        token: ${{ secrets.pat }}
