@@ -1,0 +1,23 @@
+name: MLOps Pipeline
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        pip install scikit-learn xgboost joblib fastapi uvicorn
+    - name: Train model
+      run: python train.py
+    - name: Evaluate model
+      run: python evaluate.py
+    - name: Register model
+      run: python register_model.py
